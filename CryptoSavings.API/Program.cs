@@ -14,12 +14,13 @@ namespace CryptoSavings.API
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
+            var webHost = WebHost.CreateDefaultBuilder(args)
+                                 .UseStartup<Startup>()
+                                 .UseKestrel()
+                                 .Build();
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+            // start the web host
+            webHost.Run();
+        }
     }
 }

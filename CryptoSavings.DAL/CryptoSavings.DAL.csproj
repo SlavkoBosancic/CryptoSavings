@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="106.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CryptoSavings.Contracts\CryptoSavings.Contracts.csproj" />
+    <ProjectReference Include="..\CryptoSavings.Model\CryptoSavings.Model.csproj" />
+  </ItemGroup>
+
+</Project>
