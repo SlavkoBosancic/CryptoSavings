@@ -1,4 +1,6 @@
-﻿using CryptoSavings.DAL.HttpClient;
+﻿using CryptoSavings.Contracts.DAL;
+using CryptoSavings.DAL.HttpAPI;
+using CryptoSavings.DAL.HttpClient;
 using System;
 
 namespace CryptoSavings.Development
@@ -9,7 +11,10 @@ namespace CryptoSavings.Development
         {
             Console.WriteLine("Hello World!");
 
-            var nest = new RestSharpHttpClient();
+            var client = new RestSharpHttpClient();
+            IHttpAPI cc = new CryptoCompareHttpAPI(client);
+
+            var coins = cc.GetAllCoins();
         }
     }
 }

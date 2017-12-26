@@ -20,6 +20,6 @@ namespace CryptoSavings.Model.DAL.HttpClient
 
     public class HttpClientResponse<T> : HttpClientResponse
     {
-        T Data { get; set; }
+        public T Data { get; set; }
     }
 }

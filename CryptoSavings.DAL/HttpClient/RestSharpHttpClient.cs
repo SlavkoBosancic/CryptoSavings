@@ -41,12 +41,14 @@ namespace CryptoSavings.DAL.HttpClient
             var restSharpRequest = PrepareRequest(request);
             if(restSharpRequest != null)
             {
+                _client.BaseUrl = request.BaseUri;
                 var restSharpResponse = _client.Execute(restSharpRequest);
+
                 PrepareResponse(restSharpResponse, result);
             }
             else
             {
-                result.ErrorException = new ArgumentNullException("HttpClientRequest argument is null.");
+                result.ErrorException = new ArgumentNullException(nameof(restSharpRequest));
             }
 
             return result;
@@ -59,12 +61,15 @@ namespace CryptoSavings.DAL.HttpClient
             var restSharpRequest = PrepareRequest(request);
             if (restSharpRequest != null)
             {
+                _client.BaseUrl = request.BaseUri;
                 var restSharpResponse = _client.Execute<T>(restSharpRequest);
+
                 PrepareResponse(restSharpResponse, result);
+                result.Data = restSharpResponse.Data;
             }
             else
             {
-                result.ErrorException = new ArgumentNullException("HttpClientRequest argument is null.");
+                result.ErrorException = new ArgumentNullException(nameof(restSharpRequest));
             }
 
             return result;
@@ -154,7 +159,7 @@ namespace CryptoSavings.DAL.HttpClient
             {
                 case HttpParameterType.BODY:
                     return ParameterType.RequestBody;
-                case HttpParameterType.URL:
+                case HttpParameterType.QUERY:
                     return ParameterType.QueryString;
                 case HttpParameterType.COOKIE:
                     return ParameterType.Cookie;

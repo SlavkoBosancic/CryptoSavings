@@ -4,7 +4,7 @@
     {
         COOKIE,
         HEADER,
-        URL,
+        QUERY,
         BODY
     }
 }
