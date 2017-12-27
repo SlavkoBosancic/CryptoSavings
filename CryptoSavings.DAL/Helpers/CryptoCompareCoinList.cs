@@ -8,5 +8,6 @@ namespace CryptoSavings.DAL.Helpers
     {
         public string BaseImageUrl { get; set; }
         public string BaseLinkUrl { get; set; }
+        public dynamic Data { get; set; }
     }
 }

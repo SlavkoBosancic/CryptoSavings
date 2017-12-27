@@ -1,10 +1,16 @@
-﻿namespace CryptoSavings.Model.DAL.HttpAPI
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CryptoSavings.Model.DAL.HttpAPI
 {
     public class Currency
     {
-        public string Id { get; set; }          // USD
-        public string Name { get; set; }        // US Dollar
-        public string FullName { get; set; }    // US Dollar (USD)
+        public string Id { get; set; }                      // BTC or USD
+        public string Name { get; set; }                    // Bitcoin or US Dollar
+
+        public string FullName => this.ToString();          // Bitcoin (BTC) or US Dollar (USD)
+        public bool IsEmpty => string.IsNullOrEmpty(this.Id) || string.IsNullOrEmpty(this.Name);
 
         #region Overrides
 
@@ -15,12 +21,19 @@
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return string.IsNullOrEmpty(this.Id) ? string.Empty.GetHashCode() : this.Id.GetHashCode();
         }
 
         public override string ToString()
         {
-            return this.FullName;
+            var result = string.Empty;
+
+            if(!string.IsNullOrEmpty(this.Id) && !string.IsNullOrEmpty(this.Name))
+            {
+                result = string.Format("{0} ({1})", this.Name, this.Id);
+            }
+
+            return result;
         }
 
         #endregion

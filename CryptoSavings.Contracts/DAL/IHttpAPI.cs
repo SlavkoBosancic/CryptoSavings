@@ -9,8 +9,8 @@ namespace CryptoSavings.Contracts.DAL
         string APIName { get; }
         string APIHomePage { get; }
 
-        IEnumerable<Coin> GetAllCoins();
-        CoinPrice CurrentCoinPrice(Coin coin, Currency currency);
-        IEnumerable<CoinPrice> CurrentCoinPrices(IEnumerable<Coin> coins, IEnumerable<Currency> currencies);
+        IEnumerable<CryptoCurrency> GetAllCoins();
+        TradePrice CurrentTradePrice(Currency fromCurrency, Currency toCurrency);
+        IEnumerable<TradePrice> CurrentTradePrices(IEnumerable<Currency> fromCurrencies, IEnumerable<Currency> toCurrencies);
     }
 }
