@@ -2,7 +2,6 @@
 using CryptoSavings.Model.DAL.HttpClient;
 using RestSharp;
 using System;
-using System.Collections.Generic;
 using HttpClientModels = CryptoSavings.Model.DAL.HttpClient;
 
 namespace CryptoSavings.DAL.HttpClient

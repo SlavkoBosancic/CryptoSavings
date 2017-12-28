@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CryptoSavings.Model.DAL
+namespace CryptoSavings.Model
 {
     public class TradePrice
     {
@@ -11,6 +11,6 @@ namespace CryptoSavings.Model.DAL
         public Currency ToCurrency { get; set; }
         public DateTime TimeStampUTC { get; set; }
 
-        public double Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

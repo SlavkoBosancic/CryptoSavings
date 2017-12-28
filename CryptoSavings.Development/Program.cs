@@ -4,6 +4,7 @@ using CryptoSavings.DAL.HttpClient;
 using CryptoSavings.Model.DAL.HttpAPI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CryptoSavings.Development
 {
@@ -16,16 +17,22 @@ namespace CryptoSavings.Development
             var client = new RestSharpHttpClient();
             IHttpAPI cc = new CryptoCompareHttpAPI(client);
 
-            var coins = cc.GetAllCoins();
+            var testlist = new List<Currency>();
+            testlist.Add(new FiatCurrency() { Id = "USD", Name = "US Dollar", Symbol = "$" });
+            testlist.Add(new FiatCurrency() { Id = "EUR", Name = "EURO", Symbol = "€" });
+            testlist.Add(new CryptoCurrency() { Id = "BTC", Name = "Bitcoin" });
+            testlist.Add(new CryptoCurrency() { Id = "XRP", Name = "Ripple" });
 
-            var list = new List<Currency>();
-            list.Add(new FiatCurrency() { Id = "USD", Name = "Dolla" });
-            list.Add(new FiatCurrency() { Id = "EUR", Name = "Ojro" });
-            list.Add(new CryptoCurrency() { Id = "BTC", Name = "Bitcoin" });
-            list.Add(new CryptoCurrency() { Id = "XRP", Name = "Ripple" });
+            var coins = cc.GetAllCryptoCurrencies();
+            var aggregatedList = coins.Select(x => x as Currency).ToList();
+            aggregatedList.Add(testlist[0]);
+            aggregatedList.Add(testlist[1]);
 
-            var price = cc.CurrentTradePrice(list[2], list[0]);
-            var prices = cc.CurrentTradePrices(list.GetRange(2, 2), list.GetRange(0, 2));
+            var exchanges = cc.GetAllExchanges(aggregatedList);
+
+            var price = cc.CurrentTradePrice(testlist[0], testlist[2]);
+            var prices = cc.CurrentTradePrices(testlist.GetRange(0, 1), testlist.GetRange(2, 1));
+
         }
     }
 }

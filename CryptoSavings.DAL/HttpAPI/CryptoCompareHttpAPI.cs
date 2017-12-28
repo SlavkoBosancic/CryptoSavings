@@ -1,9 +1,10 @@
 ﻿using CryptoSavings.Contracts.DAL;
-using CryptoSavings.Model.DAL;
+using CryptoSavings.Model;
 using CryptoSavings.Model.DAL.HttpAPI;
 using CryptoSavings.Model.DAL.HttpClient;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace CryptoSavings.DAL.HttpAPI
@@ -26,7 +27,7 @@ namespace CryptoSavings.DAL.HttpAPI
         public string APIName => "Crypto Compare";
         public string APIHomePage => "https://www.cryptocompare.com";
 
-        public IEnumerable<CryptoCurrency> GetAllCoins()
+        public IEnumerable<CryptoCurrency> GetAllCryptoCurrencies()
         {
             var result = new List<CryptoCurrency>();
             var fullUrl = _baseUrl + "all/coinlist";        // https://min-api.cryptocompare.com/data/all/coinlist
@@ -64,6 +65,61 @@ namespace CryptoSavings.DAL.HttpAPI
             return result;
         }
 
+        public IEnumerable<Exchange> GetAllExchanges(IEnumerable<Currency> allCurrencies)
+        {
+            var result = new List<Exchange>();
+            var fullUrl = _baseUrl + "all/exchanges";        // https://min-api.cryptocompare.com/data/all/exchanges
+
+            var request = _httpClient.CreateRequest(fullUrl);
+            var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
+
+            if (CheckAPIResponse(response))
+            {
+                foreach(var exchange in response.Data)
+                {
+                    if (exchange.Value is Dictionary<string, object>)
+                    {
+                        var exchangeModel = new Exchange(exchange.Key);
+                        var pairs = exchange.Value as Dictionary<string, object>;
+
+                        foreach(var pair in pairs)
+                        {
+                            var fromCurrency = allCurrencies.FirstOrDefault(x => x.Id == pair.Key);
+                            if(fromCurrency != null)
+                            {
+                                var toCurrencies = new List<Currency>();
+
+                                if (pair.Value is List<object>)
+                                {
+                                    var toCurrencyIds = pair.Value as List<object>;
+                                    foreach(var toCurrencyId in toCurrencyIds)
+                                    {
+                                        if (toCurrencyId is string)
+                                        {
+                                            var toCurrency = allCurrencies.FirstOrDefault(x => x.Id == (string)toCurrencyId);
+                                            if (toCurrency != null)
+                                            {
+                                                toCurrencies.Add(toCurrency);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (toCurrencies.Any())
+                                {
+                                    exchangeModel.TradePairs.Add(fromCurrency, toCurrencies);
+                                }
+                            }
+                        }
+
+                        result.Add(exchangeModel);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public TradePrice CurrentTradePrice(Currency fromCurrency, Currency toCurrency)
         {
             TradePrice result = null;
@@ -80,12 +136,12 @@ namespace CryptoSavings.DAL.HttpAPI
                 {
                     if (response.Data.ContainsKey(toCurrency.Id))
                     {
-                        result = new TradePrice()
+                        result = new TradePrice
                         {
                             FromCurrency = fromCurrency,
                             ToCurrency = toCurrency,
                             TimeStampUTC = DateTime.UtcNow,
-                            Price = Convert.ToDouble(response.Data[toCurrency.Id])
+                            Price = Convert.ToDecimal(response.Data[toCurrency.Id], NumberFormatInfo.InvariantInfo)
                         };
                     }
                 }
@@ -113,6 +169,30 @@ namespace CryptoSavings.DAL.HttpAPI
                     var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
                     if (CheckAPIResponse(response))
                     {
+                        foreach(var fromId in fromCurrencyIds)
+                        {
+                            if (response.Data.ContainsKey(fromId))
+                            {
+                                if(response.Data[fromId] is Dictionary<string, object>)
+                                {
+                                    var toPairs = response.Data[fromId] as Dictionary<string, object>;
+
+                                    foreach(var toId in toCurrencyIds)
+                                    {
+                                        if (toPairs.ContainsKey(toId))
+                                        {
+                                            result.Add(new TradePrice
+                                            {
+                                                FromCurrency = fromCurrencies.FirstOrDefault(x => x.Id == fromId),
+                                                ToCurrency = toCurrencies.FirstOrDefault(x => x.Id == toId),
+                                                TimeStampUTC = DateTime.UtcNow,
+                                                Price = Convert.ToDecimal(toPairs[toId])
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         //if (response.Data.ContainsKey(toCurrency.Id))
                         //{
                         //    result = new TradePrice()

@@ -12,7 +12,7 @@ namespace CryptoSavings.Model.DAL.HttpAPI
         public string FullName => this.ToString();          // Bitcoin (BTC) or US Dollar (USD)
         public bool IsEmpty => string.IsNullOrEmpty(this.Id) || string.IsNullOrEmpty(this.Name);
 
-        #region Overrides
+        #region [Overrides]
 
         public override bool Equals(object obj)
         {
