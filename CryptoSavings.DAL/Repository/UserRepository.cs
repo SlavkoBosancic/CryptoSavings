@@ -1,21 +1,32 @@
 ﻿using CryptoSavings.Contracts.Repository;
 using CryptoSavings.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CryptoSavings.DAL.Repository
 {
     public class UserRepository : LiteDBRepository<User>, IUserRepository
     {
+        #region [CTOR]
+
+        public UserRepository()
+        {
+        }
+
+        #endregion
+
         public IEnumerable<User> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return base.GetAll();
         }
-    }
 
-    public interface IUserRepository
-    {
-        IEnumerable<User> GetAllUsers();
+        public object CreateUser(User entity)
+        {
+
+            return base.Create(entity);
+        }
+
+        #region [Private]
+
+        #endregion
     }
 }

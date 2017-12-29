@@ -79,7 +79,7 @@ namespace CryptoSavings.DAL.HttpAPI
                 {
                     if (exchange.Value is Dictionary<string, object>)
                     {
-                        var exchangeModel = new Exchange(exchange.Key);
+                        var exchangeModel = new Exchange { Name = exchange.Key };
                         var pairs = exchange.Value as Dictionary<string, object>;
 
                         foreach(var pair in pairs)

@@ -6,9 +6,10 @@ namespace CryptoSavings.Model
 {
     public class Purchase
     {
+        public int Id { get; set; }
         public TradePrice TradePrice { get; set; }
         public double Quantity { get; set; }
-        public string ExchangeName { get; set; }
-        public string UserEmail { get; set; }
+        public Exchange Exchange { get; set; }
+        public User User { get; set; }
     }
 }
