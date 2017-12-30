@@ -35,10 +35,11 @@ namespace CryptoSavings.Development
             var price = cc.CurrentTradePrice(testlist[0], testlist[2]);
             var prices = cc.CurrentTradePrices(testlist.GetRange(0, 1), testlist.GetRange(2, 1));
 
-            TestDBRepository();
+            TestUserRepository();
+            TestPurchaseRepository(price, exchanges.ElementAt(0));
         }
 
-        static void TestDBRepository()
+        static void TestUserRepository()
         {
             var user = new User { Email = "kica@", FirstName = "kica", LastName = "kica" };
             var user1 = new User { Email = "kica1@", FirstName = "kica1", LastName = "kica1" };
@@ -82,6 +83,63 @@ namespace CryptoSavings.Development
             var d4 = n.Delete(user4);
 
             var c4 = n.CountAll();
+        }
+
+        static void TestPurchaseRepository(TradePrice tradePrice, Exchange exchange)
+        {
+            var ur = new LiteDBRepository<User>();
+            var pu = new LiteDBRepository<Purchase>();
+
+            var user = new User { Email = "slavko", FirstName = "test", LastName = "testovic" };
+            var ukey = ur.Create(user);
+
+            var pur = new Purchase
+            {
+                Exchange = exchange,
+                TradePrice = tradePrice,
+                Quantity = 1.023,
+                User = user
+            };
+
+            var pur1 = new Purchase
+            {
+                Id = 777,
+                Exchange = exchange,
+                TradePrice = tradePrice,
+                Quantity = 123,
+                User = new User { Email = "slavko1", FirstName = "test1" }
+            };
+
+            var key = pu.Create(pur);
+            var key1 = pu.Create(pur1);
+
+            var c = pu.CountAll();
+            var c1 = pu.Count(x => x.Id == (int)key);
+            var c2 = pu.Count(x => x.Quantity == 123);
+            var c3 = pu.Count(x => x.Exchange.Name == exchange.Name);
+
+            var u = pu.GetAll();
+            var u1 = pu.Get(x => x.Id == 777);
+            var u2 = pu.Get(x => x.Exchange.Name == exchange.Name);
+
+            var u3 = pu.GetSingle(x => x.Id == (int)key1);
+            var u4 = pu.GetSingle(x => x.Exchange.Name == exchange.Name);
+
+            var e = pu.Exists(x => x.Exchange.Name == exchange.Name);
+
+            pur.Quantity = 0.00045;
+            var up = pu.Update(pur);
+            var up1 = pu.Update(new Purchase { Quantity = 123456789 });
+            var up2 = pu.GetSingle(x => x.Id == (int)key);
+            var up3 = pu.GetSingle(x => x.Quantity == 123456789);
+
+
+            var d = pu.Delete(new Purchase { Id = 123456789 });
+            var d0 = pu.Delete(pur);
+            var d1 = pu.Delete(pur1);
+            var d2 = ur.Delete(user);
+
+            var c4 = pu.CountAll();
         }
     }
 }

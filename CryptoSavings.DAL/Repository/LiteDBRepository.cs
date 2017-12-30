@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Linq;
 
 namespace CryptoSavings.DAL.Repository
 {
@@ -43,9 +44,25 @@ namespace CryptoSavings.DAL.Repository
                 }
             }
 
+            if (string.IsNullOrEmpty(_keyPropertyName))
+            {
+                var idProp = props.FirstOrDefault(x => x.Name == "Id");
+
+                if(idProp == null)
+                {
+                    idProp = props.FirstOrDefault(x => x.Name == string.Format("{0}Id", _tableName));
+                }
+
+                if(idProp != null)
+                {
+                    _keyPropertyAutoAssigned = true;
+                    _keyPropertyName = idProp.Name;
+                }
+            }
+
             // Assign the primary-key property name in the global mapper of LiteDB
-            if (!string.IsNullOrEmpty(_keyPropertyName))
-                BsonMapper.Global.ResolveMember = PrimaryKeyMapper;
+            // If primary key auto-assigned, ignore it`s input value when creating
+            BsonMapper.Global.ResolveMember = PrimaryKeyMapper;
         }
 
         #endregion
@@ -59,15 +76,15 @@ namespace CryptoSavings.DAL.Repository
                 if (!_keyPropertyAutoAssigned)
                 {
                     var keyValue = GetKeyPropertyValue(entity);
+                    var exists = _db.GetCollection<T>()
+                                    .Exists(Query.EQ(_keyPropertyMappingName, new BsonValue(keyValue)));
 
-                    if (keyValue != null)
-                    {
-                        var exists = _db.GetCollection<T>()
-                                        .Exists(Query.EQ(_keyPropertyMappingName, new BsonValue(keyValue)));
-
-                        if (exists)
-                            return result;
-                    }
+                    if (exists)
+                        return null;
+                }
+                else
+                {
+                    ClearIdPropertyValue(entity);
                 }
 
                 var newKey = _db.GetCollection<T>().Insert(entity);
@@ -84,6 +101,7 @@ namespace CryptoSavings.DAL.Repository
             if (entity != null)
             {
                 var keyValue = GetKeyPropertyValue(entity);
+
                 if (keyValue != null)
                 {
                     result = _db.GetCollection<T>()
@@ -159,8 +177,24 @@ namespace CryptoSavings.DAL.Repository
 
         private object GetKeyPropertyValue(T entity)
         {
-            return typeof(T).GetProperty(_keyPropertyName)
-                            .GetValue(entity);
+            object result = null;
+
+            if (entity != null && !string.IsNullOrEmpty(_keyPropertyName))
+            {
+                result = typeof(T).GetProperty(_keyPropertyName)
+                                  .GetValue(entity);
+            }
+
+            return result;
+        }
+
+        private void ClearIdPropertyValue(T entity)
+        {
+            if (entity != null && !string.IsNullOrEmpty(_keyPropertyName))
+            {
+                typeof(T).GetProperty(_keyPropertyName)
+                         .SetValue(entity, null);
+            }
         }
 
         #endregion
