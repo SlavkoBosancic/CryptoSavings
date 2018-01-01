@@ -1,6 +1,6 @@
 ﻿using CryptoSavings.Model.DAL.HttpClient;
 
-namespace CryptoSavings.Contracts.DAL
+namespace CryptoSavings.Infrastructure.Contracts.DAL
 {
     public interface IHttpClient
     {

@@ -1,9 +1,8 @@
-﻿using CryptoSavings.Contracts.Core;
+﻿using CryptoSavings.Infrastructure.Contracts.Core;
+using CryptoSavings.Infrastructure.Contracts.Repository;
+using CryptoSavings.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using CryptoSavings.Model;
-using CryptoSavings.Contracts.Repository;
 
 namespace CryptoSavings.Core
 {

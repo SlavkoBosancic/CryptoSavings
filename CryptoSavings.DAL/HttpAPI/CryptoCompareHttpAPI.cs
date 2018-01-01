@@ -1,4 +1,4 @@
-﻿using CryptoSavings.Contracts.DAL;
+﻿using CryptoSavings.Infrastructure.Contracts.DAL;
 using CryptoSavings.Model;
 using CryptoSavings.Model.DAL.HttpAPI;
 using CryptoSavings.Model.DAL.HttpClient;

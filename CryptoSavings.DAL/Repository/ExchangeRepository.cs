@@ -1,8 +1,7 @@
-﻿using CryptoSavings.Contracts.Repository;
+﻿using CryptoSavings.Infrastructure.Contracts.Repository;
 using CryptoSavings.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CryptoSavings.DAL.Repository
 {

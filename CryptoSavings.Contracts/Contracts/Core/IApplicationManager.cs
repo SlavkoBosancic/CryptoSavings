@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CryptoSavings.Contracts.Core
+namespace CryptoSavings.Infrastructure.Contracts.Core
 {
     public interface IApplicationManager
     {

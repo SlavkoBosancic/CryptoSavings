@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CryptoSavings.Contracts.Repository
+namespace CryptoSavings.Infrastructure.Contracts.Repository
 {
     public interface IPurchaseRepository
     {

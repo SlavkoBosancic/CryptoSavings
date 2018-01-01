@@ -1,6 +1,6 @@
-﻿using CryptoSavings.Contracts.Core;
-using CryptoSavings.Contracts.DAL;
-using CryptoSavings.Contracts.Repository;
+﻿using CryptoSavings.Infrastructure.Contracts.Core;
+using CryptoSavings.Infrastructure.Contracts.DAL;
+using CryptoSavings.Infrastructure.Contracts.Repository;
 using CryptoSavings.Model;
 using CryptoSavings.Model.DAL.HttpAPI;
 using System;

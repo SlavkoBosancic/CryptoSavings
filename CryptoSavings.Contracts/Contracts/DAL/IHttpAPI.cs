@@ -2,7 +2,7 @@
 using CryptoSavings.Model.DAL.HttpAPI;
 using System.Collections.Generic;
 
-namespace CryptoSavings.Contracts.DAL
+namespace CryptoSavings.Infrastructure.Contracts.DAL
 {
     public interface IHttpAPI
     {

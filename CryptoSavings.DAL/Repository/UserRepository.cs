@@ -1,6 +1,5 @@
-﻿using CryptoSavings.Contracts.Repository;
+﻿using CryptoSavings.Infrastructure.Contracts.Repository;
 using CryptoSavings.Model;
-using System.Collections.Generic;
 using System;
 using System.Linq.Expressions;
 

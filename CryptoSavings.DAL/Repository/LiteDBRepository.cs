@@ -1,11 +1,11 @@
-﻿using CryptoSavings.Contracts.Repository;
+﻿using CryptoSavings.Infrastructure.Contracts.Repository;
 using CryptoSavings.Model.DAL.Repository;
 using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Linq;
 
 namespace CryptoSavings.DAL.Repository
 {
