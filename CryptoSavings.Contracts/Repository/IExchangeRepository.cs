@@ -1,7 +1,7 @@
 ﻿using CryptoSavings.Model;
 using System.Collections.Generic;
 
-namespace CryptoSavings.Infrastructure.Contracts.Repository
+namespace CryptoSavings.Contracts.Repository
 {
     public interface IExchangeRepository
     {

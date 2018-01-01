@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CryptoSavings.Contracts\CryptoSavings.Infrastructure.csproj" />
+    <ProjectReference Include="..\CryptoSavings.Contracts\CryptoSavings.Contracts.csproj" />
     <ProjectReference Include="..\CryptoSavings.Model\CryptoSavings.Model.csproj" />
   </ItemGroup>
 

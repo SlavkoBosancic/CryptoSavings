@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CryptoSavings.Infrastructure.Contracts.Repository
+namespace CryptoSavings.Contracts.Repository
 {
     public interface IRepository<T> where T : class
     {

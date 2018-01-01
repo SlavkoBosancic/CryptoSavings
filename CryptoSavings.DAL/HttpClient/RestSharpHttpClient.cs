@@ -1,4 +1,4 @@
-﻿using CryptoSavings.Infrastructure.Contracts.DAL;
+﻿using CryptoSavings.Contracts.DAL;
 using CryptoSavings.Model.DAL.HttpClient;
 using RestSharp;
 using System;

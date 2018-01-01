@@ -1,7 +1,8 @@
-﻿using CryptoSavings.Infrastructure.Contracts.Repository;
+﻿using CryptoSavings.Contracts.Repository;
 using CryptoSavings.Model.DAL.HttpAPI;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CryptoSavings.DAL.Repository
 {

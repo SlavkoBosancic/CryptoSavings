@@ -1,7 +1,7 @@
-﻿using CryptoSavings.DAL.HttpAPI;
+﻿using CryptoSavings.Contracts.DAL;
+using CryptoSavings.DAL.HttpAPI;
 using CryptoSavings.DAL.HttpClient;
 using CryptoSavings.DAL.Repository;
-using CryptoSavings.Infrastructure.Contracts.DAL;
 using CryptoSavings.Model;
 using CryptoSavings.Model.DAL.HttpAPI;
 using System;

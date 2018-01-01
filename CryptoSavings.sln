@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.API", "CryptoSavings.API\CryptoSavings.API.csproj", "{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSavings.API", "CryptoSavings.API\CryptoSavings.API.csproj", "{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.Core", "CryptoSavings.Core\CryptoSavings.Core.csproj", "{06992214-E3AD-4EF2-9D6F-0ABFA00F473F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSavings.Core", "CryptoSavings.Core\CryptoSavings.Core.csproj", "{06992214-E3AD-4EF2-9D6F-0ABFA00F473F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.Infrastructure", "CryptoSavings.Contracts\CryptoSavings.Infrastructure.csproj", "{4630B805-E775-407D-9BA6-70DA40BF9EC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSavings.Contracts", "CryptoSavings.Contracts\CryptoSavings.Contracts.csproj", "{4630B805-E775-407D-9BA6-70DA40BF9EC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.DAL", "CryptoSavings.DAL\CryptoSavings.DAL.csproj", "{28875F09-C9D8-4E00-B8D2-46E6D80D9DD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSavings.DAL", "CryptoSavings.DAL\CryptoSavings.DAL.csproj", "{28875F09-C9D8-4E00-B8D2-46E6D80D9DD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.Development", "CryptoSavings.Development\CryptoSavings.Development.csproj", "{62DE2616-9E93-460C-B9CA-C84C4A9CA982}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSavings.Development", "CryptoSavings.Development\CryptoSavings.Development.csproj", "{62DE2616-9E93-460C-B9CA-C84C4A9CA982}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.Model", "CryptoSavings.Model\CryptoSavings.Model.csproj", "{6F9D1BE2-9CC0-459D-9AB2-18550FB42EF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSavings.Model", "CryptoSavings.Model\CryptoSavings.Model.csproj", "{6F9D1BE2-9CC0-459D-9AB2-18550FB42EF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

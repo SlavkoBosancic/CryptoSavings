@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CryptoSavings.Infrastructure.Contracts.Core
+namespace CryptoSavings.Contracts.Core
 {
     public interface IPortfolioManager
     {
