@@ -1,6 +1,8 @@
 ﻿using CryptoSavings.Contracts.Repository;
 using CryptoSavings.Model;
 using System.Collections.Generic;
+using System;
+using System.Linq.Expressions;
 
 namespace CryptoSavings.DAL.Repository
 {
@@ -14,15 +16,19 @@ namespace CryptoSavings.DAL.Repository
 
         #endregion
 
-        public IEnumerable<User> GetAllUsers()
+        public object CreateUser(User user)
         {
-            return base.GetAll();
+            return Create(user);
         }
 
-        public object CreateUser(User entity)
+        public User GetSingleUser(Expression<Func<User, bool>> where)
         {
+            return GetSingle(where);
+        }
 
-            return base.Create(entity);
+        public bool UserExists(Expression<Func<User, bool>> where)
+        {
+            return Exists(where);
         }
 
         #region [Private]
