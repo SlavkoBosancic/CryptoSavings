@@ -1,14 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CryptoSavings.Contracts.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace CryptoSavings.API.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly ILogger<ValuesController> _logger;
+        private readonly IPortfolioManager _portfolioManager;
+
+        public ValuesController(ILogger<ValuesController> logger, IPortfolioManager portfolioManager)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _portfolioManager = portfolioManager ?? throw new ArgumentNullException(nameof(portfolioManager));
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -20,8 +29,8 @@ namespace CryptoSavings.API.Controllers
         [HttpGet("{id}")]
         public int Get(int id)
         {
-
-            return id / 0;
+            _logger.LogDebug("Get method called with id:{0}", id);
+            return id;
         }
 
         // POST api/values
@@ -34,6 +43,7 @@ namespace CryptoSavings.API.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
+            _portfolioManager.GetUserPortfoilo(new Model.User());
         }
 
         // DELETE api/values/5

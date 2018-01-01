@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using CryptoSavings.Infrastructure.DI;
 
 namespace CryptoSavings.API
 {
@@ -25,10 +26,13 @@ namespace CryptoSavings.API
         #endregion
 
         // Dependancy and services configuration
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Adding MVC (including WebAPI)
             services.AddMvc();
+
+            AutofacContainer container = new AutofacContainer();
+            return container.BuildContainer(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +50,8 @@ namespace CryptoSavings.API
                 app.UseExceptionHandler("/error.html");
             }
 
-            app.UseMvc();
             app.UseFileServer(new FileServerOptions { EnableDefaultFiles = true, EnableDirectoryBrowsing = false });
+            app.UseMvc();
         }
     }
 }

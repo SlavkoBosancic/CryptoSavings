@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.2" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CryptoSavings.Contracts\CryptoSavings.Contracts.csproj" />
+    <ProjectReference Include="..\CryptoSavings.Core\CryptoSavings.Core.csproj" />
+    <ProjectReference Include="..\CryptoSavings.DAL\CryptoSavings.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
