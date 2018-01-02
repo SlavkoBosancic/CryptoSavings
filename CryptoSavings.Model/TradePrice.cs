@@ -1,7 +1,5 @@
 ﻿using CryptoSavings.Model.DAL.HttpAPI;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CryptoSavings.Model
 {

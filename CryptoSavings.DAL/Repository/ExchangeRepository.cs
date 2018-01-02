@@ -1,21 +1,25 @@
 ﻿using CryptoSavings.Contracts.Repository;
 using CryptoSavings.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace CryptoSavings.DAL.Repository
 {
-    public class ExchangeRepository : LiteDBRepository<Exchange>, IExchangeRepository
+    internal class ExchangeRepository : LiteDBRepository<Exchange>, IExchangeRepository
     {
-        public int GetExchangeMarketsCount()
+        public bool PopulateExchangeMarkets(IEnumerable<Exchange> exchanges)
         {
-            return CountAll();
-        }
+            var result = false;
 
-        public bool PopulateExchangeMarkets(IEnumerable<Exchange> currencies)
-        {
-            throw new NotImplementedException();
+            if(exchanges != null && exchanges.Any())
+            {
+                var insertCount = _db.GetCollection<Exchange>()
+                                     .InsertBulk(exchanges);
+
+                result = exchanges.Count() == insertCount;
+            }
+
+            return result;
         }
     }
 }

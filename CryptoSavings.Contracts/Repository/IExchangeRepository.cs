@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace CryptoSavings.Contracts.Repository
 {
-    public interface IExchangeRepository
+    public interface IExchangeRepository : IRepository<Exchange>
     {
-        int GetExchangeMarketsCount();
-        bool PopulateExchangeMarkets(IEnumerable<Exchange> currencies);
+        bool PopulateExchangeMarkets(IEnumerable<Exchange> exchanges);
     }
 }

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace CryptoSavings.DAL.HttpAPI
 {
-    public class CryptoCompareHttpAPI : IHttpAPI
+    internal class CryptoCompareHttpAPI : IHttpAPI
     {
         private readonly IHttpClient _httpClient;
         private readonly string _baseUrl = "https://min-api.cryptocompare.com/data/";

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CryptoSavings.Contracts.Repository
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class, new()
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Get(Expression<Func<T, bool>> where);

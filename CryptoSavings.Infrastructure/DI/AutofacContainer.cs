@@ -3,10 +3,12 @@ using Autofac.Extensions.DependencyInjection;
 using CryptoSavings.Contracts.Core;
 using CryptoSavings.Contracts.Repository;
 using CryptoSavings.Core;
+using CryptoSavings.DAL.HttpClient;
 using CryptoSavings.DAL.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace CryptoSavings.Infrastructure.DI
@@ -33,8 +35,11 @@ namespace CryptoSavings.Infrastructure.DI
             // registrations will override. You can make registrations
             // before or after Populate, however you choose.
 
-            containerBuilder.RegisterType<PortfolioManager>().As<IPortfolioManager>();
-            containerBuilder.RegisterType<PurchaseRepository>().As<IPurchaseRepository>();
+            var dalAssembly = Assembly.GetAssembly(typeof(RestSharpHttpClient));
+            containerBuilder.RegisterAssemblyTypes(dalAssembly).AsImplementedInterfaces();
+
+            var coreAssembly = Assembly.GetAssembly(typeof(ApplicationManager));
+            containerBuilder.RegisterAssemblyTypes(coreAssembly).Where(t => t.Name.EndsWith("Manager")).AsImplementedInterfaces();
 
             // Creating a new AutofacServiceProvider makes the container
             // available to your app using the Microsoft IServiceProvider

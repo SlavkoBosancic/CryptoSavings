@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CryptoSavings.Model.DAL.HttpAPI
+﻿namespace CryptoSavings.Model.DAL.HttpAPI
 {
     public class Currency
     {

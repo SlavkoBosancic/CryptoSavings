@@ -9,21 +9,44 @@ using System.Linq;
 
 namespace CryptoSavings.DAL.Repository
 {
-    public class LiteDBRepository<T> : IRepository<T> where T : class
+    /// <summary>
+    /// This non-generic base class is needed in order to have a singleton LiteDatabase instance
+    /// as recommended in scenarios where thread-safety is needed but not proces-safety.
+    /// Creatina a new instance for each of the Repository<T> would be unnecessary slow.
+    /// </summary>
+    internal abstract class LiteDBRepository
     {
-        private static readonly string _tableName;
-
-        private static readonly string _keyPropertyName = string.Empty;
-        private static readonly string _keyPropertyMappingName = "_id";
-        private static readonly bool _keyPropertyAutoAssigned = true;
-
-        private static readonly LiteDatabase _db = new LiteDatabase("CryptoSavings.Repository.db");
+        protected static readonly string _internalIdPropertyName = "_id";
+        protected static readonly LiteDatabase _db = new LiteDatabase("CryptoSavings.Repository.db");
 
         #region [CTOR]
 
-        public LiteDBRepository()
+        static LiteDBRepository()
         {
+            // Assign the primary-key property name in the global mapper of LiteDB
+            BsonMapper.Global.ResolveMember = PrimaryKeyMapper;
         }
+
+        #endregion
+
+        private static void PrimaryKeyMapper(Type memberType, MemberInfo memberInfo, MemberMapper mMapper)
+        {
+            var key = memberInfo.GetCustomAttribute<PrimaryKeyAttribute>(true);
+            if (key != null)
+            {
+                mMapper.AutoId = key.AutoAssigned;
+                mMapper.FieldName = _internalIdPropertyName;
+            }
+        }
+    }
+
+    internal class LiteDBRepository<T> : LiteDBRepository, IRepository<T> where T : class, new()
+    {
+        private static readonly string _tableName;
+        private static readonly string _keyPropertyName = string.Empty;
+        private static readonly bool _keyPropertyAutoAssigned = true;
+
+        #region [CTOR]
 
         static LiteDBRepository()
         {
@@ -44,6 +67,7 @@ namespace CryptoSavings.DAL.Repository
                 }
             }
 
+            // if no custom Primary key attribute found, use LiteDB rules for Id detection
             if (string.IsNullOrEmpty(_keyPropertyName))
             {
                 var idProp = props.FirstOrDefault(x => x.Name == "Id");
@@ -59,10 +83,6 @@ namespace CryptoSavings.DAL.Repository
                     _keyPropertyName = idProp.Name;
                 }
             }
-
-            // Assign the primary-key property name in the global mapper of LiteDB
-            // If primary key auto-assigned, ignore it`s input value when creating
-            BsonMapper.Global.ResolveMember = PrimaryKeyMapper;
         }
 
         #endregion
@@ -77,7 +97,7 @@ namespace CryptoSavings.DAL.Repository
                 {
                     var keyValue = GetKeyPropertyValue(entity);
                     var exists = _db.GetCollection<T>()
-                                    .Exists(Query.EQ(_keyPropertyMappingName, new BsonValue(keyValue)));
+                                    .Exists(Query.EQ(_internalIdPropertyName, new BsonValue(keyValue)));
 
                     if (exists)
                         return null;
@@ -162,18 +182,6 @@ namespace CryptoSavings.DAL.Repository
         }
 
         #region [Private]
-
-        private static void PrimaryKeyMapper(Type memberType, MemberInfo memberInfo, MemberMapper mMapper)
-        {
-            if (memberType == typeof(T))
-            {
-                if (memberInfo.Name == _keyPropertyName)
-                {
-                    mMapper.AutoId = _keyPropertyAutoAssigned;
-                    mMapper.FieldName = _keyPropertyMappingName;
-                }
-            }
-        }
 
         private object GetKeyPropertyValue(T entity)
         {

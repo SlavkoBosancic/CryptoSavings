@@ -1,7 +1,9 @@
 ﻿using CryptoSavings.Contracts.DAL;
+using CryptoSavings.Contracts.Repository;
 using CryptoSavings.DAL.HttpAPI;
 using CryptoSavings.DAL.HttpClient;
 using CryptoSavings.DAL.Repository;
+using CryptoSavings.Infrastructure.DI;
 using CryptoSavings.Model;
 using CryptoSavings.Model.DAL.HttpAPI;
 using System;
@@ -16,8 +18,11 @@ namespace CryptoSavings.Development
         {
             Console.WriteLine("Hello World!");
 
-            var client = new RestSharpHttpClient();
-            IHttpAPI cc = new CryptoCompareHttpAPI(client);
+            AutofacContainer ac = new AutofacContainer();
+            var container =ac.BuildContainer();
+
+
+            var cc = container.GetService(typeof(IHttpAPI)) as IHttpAPI;
 
             var testlist = new List<Currency>();
             testlist.Add(new FiatCurrency() { Id = "USD", Name = "US Dollar", Symbol = "$" });
@@ -35,18 +40,19 @@ namespace CryptoSavings.Development
             var price = cc.CurrentTradePrice(testlist[0], testlist[2]);
             var prices = cc.CurrentTradePrices(testlist.GetRange(0, 1), testlist.GetRange(2, 1));
 
-            TestUserRepository();
-            TestPurchaseRepository(price, exchanges.ElementAt(0));
+            TestUserRepository(container);
+            TestPurchaseRepository(container, price, exchanges.ElementAt(0));
         }
 
-        static void TestUserRepository()
+        static void TestUserRepository(IServiceProvider container)
         {
             var user = new User { Email = "kica@", FirstName = "kica", LastName = "kica" };
             var user1 = new User { Email = "kica1@", FirstName = "kica1", LastName = "kica1" };
             var user2 = new User { Email = "kica2@", FirstName = "kica2", LastName = "kica2" };
             var user3 = new User { Email = "kica3@", FirstName = "kica3", LastName = "kica3" };
             var user4 = new User { Email = "kica4@", FirstName = "kica4", LastName = "kica4" };
-            var n = new LiteDBRepository<User>();
+
+            var n = container.GetService(typeof(IRepository<User>)) as IRepository<User>;
 
             var key = n.Create(user);
             var key1 = n.Create(user1);
@@ -85,10 +91,10 @@ namespace CryptoSavings.Development
             var c4 = n.CountAll();
         }
 
-        static void TestPurchaseRepository(TradePrice tradePrice, Exchange exchange)
+        static void TestPurchaseRepository(IServiceProvider container, TradePrice tradePrice, Exchange exchange)
         {
-            var ur = new LiteDBRepository<User>();
-            var pu = new LiteDBRepository<Purchase>();
+            var ur = container.GetService(typeof(IRepository<User>)) as IRepository<User>;
+            var pu = container.GetService(typeof(IRepository<Purchase>)) as IRepository<Purchase>;
 
             var user = new User { Email = "slavko", FirstName = "test", LastName = "testovic" };
             var ukey = ur.Create(user);

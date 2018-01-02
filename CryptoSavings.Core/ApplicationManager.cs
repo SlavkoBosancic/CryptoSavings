@@ -55,7 +55,7 @@ namespace CryptoSavings.Core
                         result = result && fiatPopulateSuccess;
 
                         // Handle crypto currencies
-                        if (_cryptoRepository.GetCryptoCurrencyCount() < 1)
+                        if (_cryptoRepository.CountAll() < 1)
                         {
                             if (!cryptoCurrencies.Any())
                             {
@@ -67,7 +67,7 @@ namespace CryptoSavings.Core
                         }
 
                         // Handle exchange markets
-                        if(_exchangeRepository.GetExchangeMarketsCount() < 1)
+                        if(_exchangeRepository.CountAll() < 1)
                         {
                             if (!cryptoCurrencies.Any())
                             {
@@ -85,9 +85,9 @@ namespace CryptoSavings.Core
 
                         // Add demo user
                         var demoUser = CreateDemoUser();
-                        if(!_userRepository.UserExists(x => x.Email == demoUser.Email))
+                        if(!_userRepository.Exists(x => x.Email == demoUser.Email))
                         {
-                            var key = _userRepository.CreateUser(demoUser);
+                            var key = _userRepository.Create(demoUser);
                             result = result && (demoUser.Email == (string)key);
                         }
 

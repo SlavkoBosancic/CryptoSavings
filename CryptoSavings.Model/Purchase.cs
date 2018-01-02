@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CryptoSavings.Model
+﻿namespace CryptoSavings.Model
 {
     public class Purchase
     {

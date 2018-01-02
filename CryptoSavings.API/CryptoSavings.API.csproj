@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CryptoSavings.Contracts\CryptoSavings.Contracts.csproj" />
+    <ProjectReference Include="..\CryptoSavings.Core\CryptoSavings.Core.csproj" />
     <ProjectReference Include="..\CryptoSavings.Infrastructure\CryptoSavings.Infrastructure.csproj" />
   </ItemGroup>
 

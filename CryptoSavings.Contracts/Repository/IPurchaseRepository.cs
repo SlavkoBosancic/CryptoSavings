@@ -1,11 +1,9 @@
 ﻿using CryptoSavings.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CryptoSavings.Contracts.Repository
 {
-    public interface IPurchaseRepository
+    public interface IPurchaseRepository : IRepository<Purchase>
     {
         IEnumerable<Purchase> GetPurchasesByUser(User user);
     }

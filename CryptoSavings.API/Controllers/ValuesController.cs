@@ -13,6 +13,7 @@ namespace CryptoSavings.API.Controllers
         private readonly IPortfolioManager _portfolioManager;
 
         public ValuesController(ILogger<ValuesController> logger, IPortfolioManager portfolioManager)
+
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _portfolioManager = portfolioManager ?? throw new ArgumentNullException(nameof(portfolioManager));

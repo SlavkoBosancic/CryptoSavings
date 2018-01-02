@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CryptoSavings.Contracts.Repository
 {
-    public interface IFiatRepository
+    public interface IFiatRepository : IRepository<FiatCurrency>
     {
         bool InsertOrUpdateFiatCurrencies(IEnumerable<FiatCurrency> currencies);
     }

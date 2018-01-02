@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CryptoSavings.DAL.Repository
 {
-    public class PurchaseRepository : LiteDBRepository<Purchase>, IPurchaseRepository
+    internal class PurchaseRepository : LiteDBRepository<Purchase>, IPurchaseRepository
     {
         public IEnumerable<Purchase> GetPurchasesByUser(User user)
         {

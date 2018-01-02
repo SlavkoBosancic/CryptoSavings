@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace CryptoSavings.Contracts.Repository
 {
-    public interface ICryptoRepository
+    public interface ICryptoRepository : IRepository<CryptoCurrency>
     {
-        int GetCryptoCurrencyCount();
         bool PopulateCryptoCurrencies(IEnumerable<CryptoCurrency> currencies);
     }
 }
