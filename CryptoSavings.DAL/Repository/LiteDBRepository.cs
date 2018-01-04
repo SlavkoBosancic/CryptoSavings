@@ -24,7 +24,7 @@ namespace CryptoSavings.DAL.Repository
         static LiteDBRepository()
         {
             // Assign the primary-key property name in the global mapper of LiteDB
-            BsonMapper.Global.ResolveMember = PrimaryKeyMapper;
+            _db.Mapper.ResolveMember = PrimaryKeyMapper;
         }
 
         #endregion

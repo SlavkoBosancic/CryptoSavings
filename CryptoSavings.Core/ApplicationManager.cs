@@ -74,7 +74,7 @@ namespace CryptoSavings.Core
                                 cryptoCurrencies.AddRange(_httpAPI.GetAllCryptoCurrencies());
                             }
 
-                            var mergedCurrencyList = cryptoCurrencies.Select(x => x as Currency).ToList();
+                            List<Currency> mergedCurrencyList = new List<Currency>(cryptoCurrencies);
                             mergedCurrencyList.AddRange(fiatCurrencies);
 
                             var exchanges = _httpAPI.GetAllExchanges(mergedCurrencyList);
@@ -84,7 +84,7 @@ namespace CryptoSavings.Core
                         }
 
                         // Add demo user
-                        var demoUser = CreateDemoUser();
+                        var demoUser = GetDemoUser();
                         if(!_userRepository.Exists(x => x.Email == demoUser.Email))
                         {
                             var key = _userRepository.Create(demoUser);
@@ -95,6 +95,16 @@ namespace CryptoSavings.Core
                     }
                 }
             }
+        }
+
+        public User GetDemoUser()
+        {
+            return new User
+            {
+                Email = "demo@cryptosavings.com",
+                FirstName = "Demo",
+                LastName = "User"
+            };
         }
 
         #region [Private]
@@ -108,16 +118,6 @@ namespace CryptoSavings.Core
             result.Add(new FiatCurrency { Id = "GBP", Name = "British Pound", Symbol = "£" });
 
             return result;
-        }
-
-        private User CreateDemoUser()
-        {
-            return new User
-            {
-                Email = "demo@cryptosavings.com",
-                FirstName = "Demo",
-                LastName = "User"
-            };
         }
 
         #endregion

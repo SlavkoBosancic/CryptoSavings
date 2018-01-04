@@ -8,14 +8,38 @@ namespace CryptoSavings.DAL.Repository
 {
     internal class PurchaseRepository : LiteDBRepository<Purchase>, IPurchaseRepository
     {
-        public IEnumerable<Purchase> GetPurchasesByUser(User user)
+        #region [CTOR]
+
+        static PurchaseRepository()
+        {
+            _db.Mapper.Entity<Purchase>()
+                      .DbRef(x => x.Exchange, nameof(Exchange))
+                      .DbRef(x => x.User, nameof(User));
+        }
+
+        #endregion
+
+        public IEnumerable<Purchase> GetPurchasesByUser(string userId, bool includeReferences = false)
         {
             var result = new List<Purchase>();
 
-            if(user != null)
+            if(!string.IsNullOrEmpty(userId))
             {
-                var purchases = Get(x => x.User.Email == user.Email);
-                result.AddRange(purchases);
+                IEnumerable<Purchase> userPurchases = null;
+
+                if (includeReferences)
+                {
+                    userPurchases = _db.GetCollection<Purchase>()
+                                       .Include<Exchange>(x => x.Exchange)
+                                       .Include<User>(x => x.User)
+                                       .Find(x => x.User.Email == userId);
+                }
+                else
+                {
+                    userPurchases = Get(x => x.User.Email == userId);
+                }
+
+                result.AddRange(userPurchases);
             }
 
             return result;

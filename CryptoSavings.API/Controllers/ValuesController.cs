@@ -1,4 +1,6 @@
-﻿using CryptoSavings.Contracts.Core;
+﻿using CryptoSavings.API.Infrastructure.Models;
+using CryptoSavings.Contracts.Core;
+using CryptoSavings.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,47 +12,64 @@ namespace CryptoSavings.API.Controllers
     public class ValuesController : Controller
     {
         private readonly ILogger<ValuesController> _logger;
-        private readonly IPortfolioManager _portfolioManager;
+        private readonly IApplicationManager _applicationManager;
+        private readonly IPurchaseManager _purchaseManager;
 
-        public ValuesController(ILogger<ValuesController> logger, IPortfolioManager portfolioManager)
-
+        public ValuesController(ILogger<ValuesController> logger, IApplicationManager applicationManager, IPurchaseManager purchaseManager)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _portfolioManager = portfolioManager ?? throw new ArgumentNullException(nameof(portfolioManager));
+            _applicationManager = applicationManager ?? throw new ArgumentNullException(nameof(applicationManager));
+            _purchaseManager = purchaseManager ?? throw new ArgumentNullException(nameof(purchaseManager));
         }
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Purchase> Get()
         {
-            return new string[] { "value1", "value2" };
+            var demoUser = _applicationManager.GetDemoUser();
+            return _purchaseManager.GetAllPurchases(demoUser.Email);
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public int Get(int id)
+        public Purchase Get(int id)
         {
-            _logger.LogDebug("Get method called with id:{0}", id);
-            return id;
+            return _purchaseManager.GetSnglePurchase(id);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public bool Post([FromBody]PurchaseContainerModel purchaseContainer)
         {
+            var result = false;
+
+            if (purchaseContainer != null)
+            {
+                var demoUser = _applicationManager.GetDemoUser();
+                result = _purchaseManager.CreatePurchase(fromCurrencyId: purchaseContainer.FromCurrencyId,
+                                                         toCurrencyId: purchaseContainer.ToCurrencyId,
+                                                         when: purchaseContainer.When,
+                                                         price: purchaseContainer.Price,
+                                                         quantity: purchaseContainer.Quantity,
+                                                         exchangeId: purchaseContainer.ExchangeId,
+                                                         userId: demoUser.Email);
+            }
+
+            return result;
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]Purchase purchase)
         {
-            _portfolioManager.GetUserPortfoilo(new Model.User());
+            return _purchaseManager.UpdatePurchase(purchase);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            return _purchaseManager.DeletePurchase(id);
         }
     }
 }

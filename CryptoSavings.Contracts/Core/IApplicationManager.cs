@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CryptoSavings.Model;
 
 namespace CryptoSavings.Contracts.Core
 {
@@ -8,5 +6,6 @@ namespace CryptoSavings.Contracts.Core
     {
         bool DataInitialized { get; }
         void DataInitialization();
+        User GetDemoUser();
     }
 }

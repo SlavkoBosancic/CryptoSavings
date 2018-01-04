@@ -22,7 +22,7 @@ namespace CryptoSavings.Core
 
         public IEnumerable<Purchase> GetUserPortfoilo(User user)
         {
-            return _purchaseRepository.GetPurchasesByUser(user);
+            return _purchaseRepository.GetPurchasesByUser(user.Email);
         }
     }
 }

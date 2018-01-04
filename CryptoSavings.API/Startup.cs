@@ -36,8 +36,12 @@ namespace CryptoSavings.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
+            appLifetime.ApplicationStarted.Register(this.ApplicationStarted);
+            appLifetime.ApplicationStopping.Register(this.ApplicationStopping);
+            appLifetime.ApplicationStopped.Register(this.ApplicationStopped);
+
             loggerFactory.AddDebug(LogLevel.Debug);
             loggerFactory.AddConsole(LogLevel.Debug);
 
@@ -52,6 +56,23 @@ namespace CryptoSavings.API
 
             app.UseFileServer(new FileServerOptions { EnableDefaultFiles = true, EnableDirectoryBrowsing = false });
             app.UseMvc();
+        }
+
+        private void ApplicationStarted()
+        {
+
+        }
+
+        private void ApplicationStopping()
+        {
+
+        }
+
+        private void ApplicationStopped()
+        {
+            // cleanup
+            // stop DB engine
+            // etc.
         }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using CryptoSavings.Infrastructure.DI;
 using CryptoSavings.Contracts.Core;
+using System.Net;
 
 namespace CryptoSavings.API
 {
@@ -16,23 +17,24 @@ namespace CryptoSavings.API
     {
         public static void Main(string[] args)
         {
-            var dataInitializationResult = InitializeData();
+            var dataInitializationResult = InitializeApplicationData();
             if (!dataInitializationResult)
             {
                 Console.WriteLine("Required data could not be initialized. Press any key to terminate...");
+                Console.ReadKey();
                 return;
             }
 
             var webHost = WebHost.CreateDefaultBuilder(args)
                                  .UseStartup<Startup>()
-                                 .UseKestrel()
+                                 .UseUrls("http://localhost:9999")
                                  .Build();
 
             // start the web host
             webHost.Run();
         }
 
-        private static bool InitializeData()
+        private static bool InitializeApplicationData()
         {
             var result = false;
 

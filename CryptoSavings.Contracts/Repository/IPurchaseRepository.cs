@@ -5,6 +5,6 @@ namespace CryptoSavings.Contracts.Repository
 {
     public interface IPurchaseRepository : IRepository<Purchase>
     {
-        IEnumerable<Purchase> GetPurchasesByUser(User user);
+        IEnumerable<Purchase> GetPurchasesByUser(string userId, bool includeReferences = false);
     }
 }

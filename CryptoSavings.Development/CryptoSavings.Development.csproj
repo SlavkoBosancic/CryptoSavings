@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CryptoSavings.Repository.db" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CryptoSavings.DAL\CryptoSavings.DAL.csproj" />
     <ProjectReference Include="..\CryptoSavings.Infrastructure\CryptoSavings.Infrastructure.csproj" />
   </ItemGroup>
