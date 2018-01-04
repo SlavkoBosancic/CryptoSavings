@@ -12,7 +12,7 @@ namespace CryptoSavings.Contracts.DAL
         IEnumerable<CryptoCurrency> GetAllCryptoCurrencies();
         IEnumerable<Exchange> GetAllExchanges(IEnumerable<Currency> allCurrencies);
 
-        TradePrice CurrentTradePrice(Currency fromCurrency, Currency toCurrency);
-        IEnumerable<TradePrice> CurrentTradePrices(IEnumerable<Currency> fromCurrencies, IEnumerable<Currency> toCurrencies);
+        TradePrice CurrentTradePrice(string fromCurrencyId, string toCurrencyId);
+        IEnumerable<TradePrice> CurrentTradePrices(IEnumerable<string> fromCurrencyIds, IEnumerable<string> toCurrencyIds);
     }
 }

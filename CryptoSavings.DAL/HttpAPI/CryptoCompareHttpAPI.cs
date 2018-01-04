@@ -120,28 +120,28 @@ namespace CryptoSavings.DAL.HttpAPI
             return result;
         }
 
-        public TradePrice CurrentTradePrice(Currency fromCurrency, Currency toCurrency)
+        public TradePrice CurrentTradePrice(string fromCurrencyId, string toCurrencyId)
         {
             TradePrice result = null;
             var fullUrl = _baseUrl + "price";        // https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD
 
-            if (!fromCurrency.IsEmpty && !toCurrency.IsEmpty)
+            if (!string.IsNullOrEmpty(fromCurrencyId) && !string.IsNullOrEmpty(toCurrencyId))
             {
                 var request = _httpClient.CreateRequest(fullUrl);
-                request.Parameters.Add(new HttpParameter { Key = "fsym", Value = fromCurrency.Id, Type = HttpParameterType.QUERY });
-                request.Parameters.Add(new HttpParameter { Key = "tsyms", Value = toCurrency.Id, Type = HttpParameterType.QUERY });
+                request.Parameters.Add(new HttpParameter { Key = "fsym", Value = fromCurrencyId, Type = HttpParameterType.QUERY });
+                request.Parameters.Add(new HttpParameter { Key = "tsyms", Value = toCurrencyId, Type = HttpParameterType.QUERY });
 
                 var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
                 if (CheckAPIResponse(response))
                 {
-                    if (response.Data.ContainsKey(toCurrency.Id))
+                    if (response.Data.ContainsKey(toCurrencyId))
                     {
                         result = new TradePrice
                         {
-                            FromCurrencyId = fromCurrency.Id,
-                            ToCurrencyId = toCurrency.Id,
+                            FromCurrencyId = fromCurrencyId,
+                            ToCurrencyId = toCurrencyId,
                             TimeStampUTC = DateTime.UtcNow,
-                            Price = Convert.ToDecimal(response.Data[toCurrency.Id], NumberFormatInfo.InvariantInfo)
+                            Price = Convert.ToDecimal(response.Data[toCurrencyId], NumberFormatInfo.InvariantInfo)
                         };
                     }
                 }
@@ -150,45 +150,39 @@ namespace CryptoSavings.DAL.HttpAPI
             return result;
         }
 
-        public IEnumerable<TradePrice> CurrentTradePrices(IEnumerable<Currency> fromCurrencies, IEnumerable<Currency> toCurrencies)
+        public IEnumerable<TradePrice> CurrentTradePrices(IEnumerable<string> fromCurrencyIds, IEnumerable<string> toCurrencyIds)
         {
             var result = new List<TradePrice>();
             var fullUrl = _baseUrl + "pricemulti";        // https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH&tsyms=USD,EUR
 
-            if (fromCurrencies.Any() && toCurrencies.Any())
+            if (fromCurrencyIds.Any() && toCurrencyIds.Any())
             {
-                var fromCurrencyIds = fromCurrencies.Where(x => !x.IsEmpty).Select(x => x.Id);
-                var toCurrencyIds = toCurrencies.Where(x => !x.IsEmpty).Select(x => x.Id);
-
-                if (fromCurrencyIds.Any() && toCurrencyIds.Any())
-                {
                     var request = _httpClient.CreateRequest(fullUrl);
                     request.Parameters.Add(new HttpParameter { Key = "fsyms", Value = string.Join(",", fromCurrencyIds), Type = HttpParameterType.QUERY });
                     request.Parameters.Add(new HttpParameter { Key = "tsyms", Value = string.Join(",", toCurrencyIds), Type = HttpParameterType.QUERY });
 
                     var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
-                    if (CheckAPIResponse(response))
+                if (CheckAPIResponse(response))
+                {
+                    foreach (var fromId in fromCurrencyIds)
                     {
-                        foreach(var fromId in fromCurrencyIds)
+                        if (response.Data.ContainsKey(fromId))
                         {
-                            if (response.Data.ContainsKey(fromId))
+                            if (response.Data[fromId] is Dictionary<string, object>)
                             {
-                                if(response.Data[fromId] is Dictionary<string, object>)
-                                {
-                                    var toPairs = response.Data[fromId] as Dictionary<string, object>;
+                                var toPairs = response.Data[fromId] as Dictionary<string, object>;
 
-                                    foreach(var toId in toCurrencyIds)
+                                foreach (var toId in toCurrencyIds)
+                                {
+                                    if (toPairs.ContainsKey(toId))
                                     {
-                                        if (toPairs.ContainsKey(toId))
+                                        result.Add(new TradePrice
                                         {
-                                            result.Add(new TradePrice
-                                            {
-                                                FromCurrencyId = fromId,
-                                                ToCurrencyId = toId,
-                                                TimeStampUTC = DateTime.UtcNow,
-                                                Price = Convert.ToDecimal(toPairs[toId])
-                                            });
-                                        }
+                                            FromCurrencyId = fromId,
+                                            ToCurrencyId = toId,
+                                            TimeStampUTC = DateTime.UtcNow,
+                                            Price = Convert.ToDecimal(toPairs[toId])
+                                        });
                                     }
                                 }
                             }
