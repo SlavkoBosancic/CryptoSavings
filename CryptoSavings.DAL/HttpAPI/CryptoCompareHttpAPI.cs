@@ -138,8 +138,8 @@ namespace CryptoSavings.DAL.HttpAPI
                     {
                         result = new TradePrice
                         {
-                            FromCurrency = fromCurrency,
-                            ToCurrency = toCurrency,
+                            FromCurrencyId = fromCurrency.Id,
+                            ToCurrencyId = toCurrency.Id,
                             TimeStampUTC = DateTime.UtcNow,
                             Price = Convert.ToDecimal(response.Data[toCurrency.Id], NumberFormatInfo.InvariantInfo)
                         };
@@ -183,8 +183,8 @@ namespace CryptoSavings.DAL.HttpAPI
                                         {
                                             result.Add(new TradePrice
                                             {
-                                                FromCurrency = fromCurrencies.FirstOrDefault(x => x.Id == fromId),
-                                                ToCurrency = toCurrencies.FirstOrDefault(x => x.Id == toId),
+                                                FromCurrencyId = fromId,
+                                                ToCurrencyId = toId,
                                                 TimeStampUTC = DateTime.UtcNow,
                                                 Price = Convert.ToDecimal(toPairs[toId])
                                             });
@@ -193,16 +193,6 @@ namespace CryptoSavings.DAL.HttpAPI
                                 }
                             }
                         }
-                        //if (response.Data.ContainsKey(toCurrency.Id))
-                        //{
-                        //    result = new TradePrice()
-                        //    {
-                        //        FromCurrency = fromCurrency,
-                        //        ToCurrency = toCurrency,
-                        //        TimeStampUTC = DateTime.UtcNow,
-                        //        Price = Convert.ToDouble(response.Data[toCurrency.Id])
-                        //    };
-                        //}
                     }
                 }
             }

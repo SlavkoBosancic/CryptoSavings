@@ -8,7 +8,7 @@ namespace CryptoSavings.Model
     {
         [PrimaryKey(AutoAssigned = false)]
         public string Name { get; set; }
-        public Dictionary<Currency, IEnumerable<Currency>> TradePairs { get; }
+        public IDictionary<Currency, IEnumerable<Currency>> TradePairs { get; }
 
         public Exchange()
         {

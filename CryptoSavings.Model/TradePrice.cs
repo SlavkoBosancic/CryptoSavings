@@ -5,8 +5,8 @@ namespace CryptoSavings.Model
 {
     public class TradePrice
     {
-        public Currency FromCurrency { get; set; }
-        public Currency ToCurrency { get; set; }
+        public string FromCurrencyId { get; set; }
+        public string ToCurrencyId { get; set; }
         public DateTime TimeStampUTC { get; set; }
 
         public decimal Price { get; set; }

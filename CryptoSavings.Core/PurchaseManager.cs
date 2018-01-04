@@ -50,18 +50,13 @@ namespace CryptoSavings.Core
                         // price and qty at least bigger than default values
                         if(price > default(decimal) && quantity > default(double))
                         {
-                            var tradePrice = new TradePrice
+                            var purchase = new Purchase
                             {
                                 FromCurrency = fromCurrency,
                                 ToCurrency = toCurrency,
                                 Price = price,
-                                TimeStampUTC = when.ToUniversalTime()
-                            };
-
-                            var purchase = new Purchase
-                            {
                                 Quantity = quantity,
-                                TradePrice = tradePrice,
+                                TimeStampUTC = when.ToUniversalTime(),
                                 Exchange = new Exchange { Name = exchangeId },
                                 User = new User { Email = userId }
                             };
