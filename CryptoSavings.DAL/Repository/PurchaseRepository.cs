@@ -1,5 +1,6 @@
 ﻿using CryptoSavings.Contracts.Repository;
 using CryptoSavings.Model;
+using CryptoSavings.Model.DAL.HttpAPI;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -7,7 +7,7 @@ namespace CryptoSavings.Model
     {
         public string FromCurrencyId { get; set; }
         public string ToCurrencyId { get; set; }
-        public DateTime TimeStampUTC { get; set; }
+        public DateTime TimestampUTC { get; set; }
 
         public decimal Price { get; set; }
     }

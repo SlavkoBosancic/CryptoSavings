@@ -1,5 +1,6 @@
 ﻿using CryptoSavings.Model;
 using CryptoSavings.Model.DAL.HttpAPI;
+using System;
 using System.Collections.Generic;
 
 namespace CryptoSavings.Contracts.DAL
@@ -14,5 +15,7 @@ namespace CryptoSavings.Contracts.DAL
 
         TradePrice CurrentTradePrice(string fromCurrencyId, string toCurrencyId);
         IEnumerable<TradePrice> CurrentTradePrices(IEnumerable<string> fromCurrencyIds, IEnumerable<string> toCurrencyIds);
+
+        IEnumerable<TradePrice> GetHistoricalPrices(string fromCurrencyId, IEnumerable<string> toCurrencyIds, DateTime timestamp, string exchangeId = null);
     }
 }

@@ -140,7 +140,7 @@ namespace CryptoSavings.DAL.HttpAPI
                         {
                             FromCurrencyId = fromCurrencyId,
                             ToCurrencyId = toCurrencyId,
-                            TimeStampUTC = DateTime.UtcNow,
+                            TimestampUTC = DateTime.UtcNow,
                             Price = Convert.ToDecimal(response.Data[toCurrencyId], NumberFormatInfo.InvariantInfo)
                         };
                     }
@@ -161,7 +161,7 @@ namespace CryptoSavings.DAL.HttpAPI
                     request.Parameters.Add(new HttpParameter { Key = "fsyms", Value = string.Join(",", fromCurrencyIds), Type = HttpParameterType.QUERY });
                     request.Parameters.Add(new HttpParameter { Key = "tsyms", Value = string.Join(",", toCurrencyIds), Type = HttpParameterType.QUERY });
 
-                    var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
+                var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
                 if (CheckAPIResponse(response))
                 {
                     foreach (var fromId in fromCurrencyIds)
@@ -180,10 +180,57 @@ namespace CryptoSavings.DAL.HttpAPI
                                         {
                                             FromCurrencyId = fromId,
                                             ToCurrencyId = toId,
-                                            TimeStampUTC = DateTime.UtcNow,
+                                            TimestampUTC = DateTime.UtcNow,
                                             Price = Convert.ToDecimal(toPairs[toId])
                                         });
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public IEnumerable<TradePrice> GetHistoricalPrices(string fromCurrencyId, IEnumerable<string> toCurrencyIds, DateTime timestamp, string exchangeId = null)
+        {
+            var result = new List<TradePrice>();
+            var fullUrl = _baseUrl + "pricehistorical";       // https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD,EUR&ts=15435566&calculationType=Close|MidHighLow|VolFVolT
+
+            if (!string.IsNullOrEmpty(fromCurrencyId) && toCurrencyIds.Any())
+            {
+                var tsUTC = timestamp.ToUniversalTime();
+                var tsMiddayUTC = new DateTime(tsUTC.Year, tsUTC.Month, tsUTC.Day, 12, 0, 0, DateTimeKind.Utc);
+                var unixTime = (int)tsMiddayUTC.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                var request = _httpClient.CreateRequest(fullUrl);
+                request.Parameters.Add(new HttpParameter { Key = "fsym", Value = fromCurrencyId, Type = HttpParameterType.QUERY });
+                request.Parameters.Add(new HttpParameter { Key = "tsyms", Value = string.Join(",", toCurrencyIds), Type = HttpParameterType.QUERY });
+                request.Parameters.Add(new HttpParameter { Key = "ts", Value = unixTime, Type = HttpParameterType.QUERY });
+                request.Parameters.Add(new HttpParameter { Key = "e", Value = exchangeId ?? "CCCAGG", Type = HttpParameterType.QUERY });
+
+                var response = _httpClient.ExecuteRequest<Dictionary<string, object>>(request);
+                if (CheckAPIResponse(response))
+                {
+                    if (response.Data.ContainsKey(fromCurrencyId))
+                    {
+                        if (response.Data[fromCurrencyId] is Dictionary<string, object>)
+                        {
+                            var toPairs = response.Data[fromCurrencyId] as Dictionary<string, object>;
+
+                            foreach (var toId in toCurrencyIds)
+                            {
+                                if (toPairs.ContainsKey(toId))
+                                {
+                                    result.Add(new TradePrice
+                                    {
+                                        FromCurrencyId = fromCurrencyId,
+                                        ToCurrencyId = toId,
+                                        TimestampUTC = tsUTC,
+                                        Price = Convert.ToDecimal(toPairs[toId])
+                                    });
                                 }
                             }
                         }
