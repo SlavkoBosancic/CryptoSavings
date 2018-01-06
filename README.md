@@ -12,3 +12,5 @@ In general a .NET Core (Standard) app using a HTTP client to retrieve market inf
 Frontend:
 - HTML/JS web client (probably Angular) talking to restfull WebAPI (ASP.NET Core)
 - WPF desktop client (still in planing)
+
+![frontend mock image](UI-mock.jpg)
