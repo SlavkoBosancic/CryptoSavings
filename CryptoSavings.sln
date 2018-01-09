@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.API", "CryptoSavings.API\CryptoSavings.API.csproj", "{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.Core", "CryptoSavings.Core\CryptoSavings.Core.csproj", "{06992214-E3AD-4EF2-9D6F-0ABFA00F473F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSavings.Contracts", "CryptoSavings.Contracts\CryptoSavings.Contracts.csproj", "{4630B805-E775-407D-9BA6-70DA40BF9EC7}"
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4D039E2-59D3-4DF4-B0B4-9AAEC55E3F89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06992214-E3AD-4EF2-9D6F-0ABFA00F473F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06992214-E3AD-4EF2-9D6F-0ABFA00F473F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06992214-E3AD-4EF2-9D6F-0ABFA00F473F}.Release|Any CPU.ActiveCfg = Release|Any CPU
