@@ -102,19 +102,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CryptoSavings.Contracts\CryptoSavings.Contracts.csproj">
+    <ProjectReference Include="..\..\CryptoSavings.Contracts\CryptoSavings.Contracts.csproj">
       <Project>{4630b805-e775-407d-9ba6-70da40bf9ec7}</Project>
       <Name>CryptoSavings.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CryptoSavings.Core\CryptoSavings.Core.csproj">
+    <ProjectReference Include="..\..\CryptoSavings.Core\CryptoSavings.Core.csproj">
       <Project>{06992214-e3ad-4ef2-9d6f-0abfa00f473f}</Project>
       <Name>CryptoSavings.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CryptoSavings.Infrastructure\CryptoSavings.Infrastructure.csproj">
+    <ProjectReference Include="..\..\CryptoSavings.Infrastructure\CryptoSavings.Infrastructure.csproj">
       <Project>{972868de-2f8f-4237-a8d8-49bb18cd4612}</Project>
       <Name>CryptoSavings.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CryptoSavings.Model\CryptoSavings.Model.csproj">
+    <ProjectReference Include="..\..\CryptoSavings.Model\CryptoSavings.Model.csproj">
       <Project>{6f9d1be2-9cc0-459d-9ab2-18550fb42ef9}</Project>
       <Name>CryptoSavings.Model</Name>
     </ProjectReference>
