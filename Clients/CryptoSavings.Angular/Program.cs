@@ -21,7 +21,6 @@ namespace CryptoSavings.Angular
 
             var webHost = WebHost.CreateDefaultBuilder(args)
                                  .UseStartup<Startup>()
-                                 .UseUrls("http://localhost:9999")
                                  .Build();
 
             // start the web host
